@@ -22,7 +22,7 @@ using (StreamReader sr = new StreamReader("airlines.csv"))
     while ((s = sr.ReadLine()) != null)
     {
         string[]airlines_info = s.Split(",");
-        Airline airline = new Airline(airlines_info[0], airlines_info[1]);
+        Airline airline = new Airline(airlines_info[0], airlines_info[1],null);
         airlineDict[airlines_info[1]] = airline;
         airlineCount += 1;
     }
@@ -30,7 +30,7 @@ using (StreamReader sr = new StreamReader("airlines.csv"))
 }
 
 Console.WriteLine("Loading Boarding Gates...");
-using (StreamReader sr = new StreamReader("airlines.csv"))
+using (StreamReader sr = new StreamReader("boardinggates.csv"))
 {
     int boardingGateCount = 0;
     string? s = sr.ReadLine();
@@ -125,7 +125,7 @@ void ModifyFlightInfo()
 
 while (true)
 {
-    Console.WriteLine("\n \n \n \n \n =============================================");
+    Console.WriteLine("\n \n \n \n \n=============================================");
     Console.WriteLine("Welcome to Changi Airport Terminal 5");
     Console.WriteLine("=============================================");
     Console.WriteLine("1. List All Flights");
@@ -149,6 +149,18 @@ while (true)
         {
             Console.WriteLine("\nGoodbye!");
             break;
+        }
+        else if (option == 2)
+        {
+            DisplayBoardingGates();
+        }
+        else if (option == 5)
+        {
+            DisplayFlightInfoFromAirline();
+        }
+        else if (option == 6)
+        {
+            ModifyFlightInfo();
         }
     }
     catch (FormatException ex)

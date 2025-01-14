@@ -10,7 +10,7 @@ using System.Collections.Generic;
 //1)	Load files (airlines and boarding gates)
 
 List<int> optionList = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7 };
-Dictionary<string, Airline> airlineDict = new Dictionary<string, Airline>();
+List<Airline> airlineList = new List<Airline>();
 Dictionary<string, BoardingGate> boardingGateDict = new Dictionary<string, BoardingGate>();
 
 Console.WriteLine("Loading Airlines...");
@@ -22,8 +22,8 @@ using (StreamReader sr = new StreamReader("airlines.csv"))
     while ((s = sr.ReadLine()) != null)
     {
         string[]airlines_info = s.Split(",");
-        Airline airline = new Airline(airlines_info[0], airlines_info[1],null);
-        airlineDict[airlines_info[1]] = airline;
+        Airline airline = new Airline(airlines_info[0], airlines_info[1]);
+        airlineList.Add(airline);
         airlineCount += 1;
     }
     Console.WriteLine(airlineCount + " Airlines Loaded!");

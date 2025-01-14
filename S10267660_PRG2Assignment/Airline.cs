@@ -16,18 +16,16 @@ namespace S10267660_PRG2Assignment
     {
         public string Name { get; set; }
         public string Code {  get; set; }
-        public Dictionary<string, Flight> Flights { get; set; }
-        public Airline(string name, string code, Dictionary<string, Flight> flights)
+        public Dictionary<string, Flight> Flights { get; set; } = new Dictionary<string, Flight>();
+        public Airline(string name, string code)
         {
             Name = name;
             Code = code;
-            Flights = flights;
         }
         public Airline()
         {
             Name = "";
             Code = "";
-            Flights = new Dictionary<string, Flight>();
         }
         public override string ToString()
         {

@@ -17,11 +17,12 @@ namespace S10267660_PRG2Assignment
         public bool SupportsDDJB { get; set; }
         public bool SupportsLWTT { get; set; }
         public Flight Flight { get; set; }
-        public BoardingGate(string gateName, bool supportsCFFT, bool supportsDDJB, Flight flight)
+        public BoardingGate(string gateName, bool supportsCFFT, bool supportsDDJB, bool supportsLWTT, Flight flight)
         {
             GateName = gateName;
             SupportsCFFT = supportsCFFT;
             SupportsDDJB = supportsDDJB;
+            SupportsLWTT = supportsLWTT;
             Flight = flight;
         }
         public BoardingGate()
@@ -29,6 +30,7 @@ namespace S10267660_PRG2Assignment
             GateName = "";
             SupportsCFFT = false;
             SupportsDDJB = false;
+            SupportsLWTT = false;
             Flight = null;
         }
         public override string ToString()
@@ -36,6 +38,7 @@ namespace S10267660_PRG2Assignment
             string str = "Gate: " + GateName + "\n";
             str += "Supports CFFT: " + SupportsCFFT + "\n";
             str += "Supports DDJB: " + SupportsDDJB + "\n";
+            str += "Supports LWTT: " + SupportsLWTT + "\n";
             str += Flight.ToString() + "\n";
             return str;
         }

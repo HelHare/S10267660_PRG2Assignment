@@ -38,7 +38,7 @@ using (StreamReader sr = new StreamReader("airlines.csv"))
     while ((s = sr.ReadLine()) != null)
     {
         string[]boardingGateInfo = s.Split(",");
-        BoardingGate boardingGate = new BoardingGate(boardingGateInfo[0], boardingGateInfo[2], boardingGateInfo[1], boardingGateInfo[3]);
+        BoardingGate boardingGate = new BoardingGate(boardingGateInfo[0], Convert.ToBoolean(boardingGateInfo[2]), Convert.ToBoolean(boardingGateInfo[1]), Convert.ToBoolean(boardingGateInfo[3]),null);
         boardingGateDict[boardingGateInfo[0]] = boardingGate;
         boardingGateCount += 1;
     }
@@ -59,7 +59,7 @@ void DisplayBoardingGates()
     Console.WriteLine("{0,-10} {1,-10} {2,-10} {3,-10}","Gate Name","DDJB","CFFT","LWTT");
     foreach (KeyValuePair<string, BoardingGate> boardingGateInfo in boardingGateDict)
     {
-        Console.WriteLine("{0,-10} {1,-10} {2,-10} {3,-10}",boardingGateInfo.Value.GateName,boardingGateInfo.Value.SupportsCFFT,boardingGateInfo.Value.DDJB,boardingGateInfo.Value.SupportsLWTT);
+        Console.WriteLine("{0,-10} {1,-10} {2,-10} {3,-10}",boardingGateInfo.Value.GateName,boardingGateInfo.Value.SupportsCFFT,boardingGateInfo.Value.SupportsDDJB,boardingGateInfo.Value.SupportsLWTT);
     }
 }
 
@@ -76,14 +76,23 @@ void DisplayFlightInfoFromAirline()
     {
         Console.WriteLine("{0,-10} {1,-10}", airLineInfo.Value.Code, airLineInfo.Value.Name);
     }
-    Console.Write("Enter Airline Code: ");
-    string airLineCode= Console.ReadLine();
-    Console.WriteLine("=============================================");
-    Console.WriteLine("List of Flights for " + airlineDict[airLineCode].Name);
-    Console.WriteLine("=============================================");
-    
+    while (true)
+    {
+        Console.Write("Enter Airline Code: ");
+        string airLineCode = Console.ReadLine();
+        if (airlineDict.ContainsKey(airLineCode))
+        {
+            Console.WriteLine("=============================================");
+            Console.WriteLine("List of Flights for " + airlineDict[airLineCode].Name);
+            Console.WriteLine("=============================================");
 
-
+            break;
+        }
+        else
+        {
+            Console.WriteLine("Airline does not exist!");
+        }
+    }
 }
 
 //8)	Modify flight details
@@ -97,9 +106,21 @@ void ModifyFlightInfo()
     {
         Console.WriteLine("{0,-10} {1,-10}", airLineInfo.Value.Code, airLineInfo.Value.Name);
     }
-    Console.Write("Enter Airline Code: \n");
-    string airLineCode= Console.ReadLine();
-    Console.WriteLine("List of Flights for " + airlineDict[airLineCode].Name);
+    while (true)
+    {
+        Console.Write("Enter Airline Code: \n");
+        string airLineCode = Console.ReadLine();
+        if (airlineDict.ContainsKey(airLineCode))
+        {
+            Console.WriteLine("List of Flights for " + airlineDict[airLineCode].Name);
+            
+            break;
+        }
+        else
+        {
+            Console.WriteLine("Airline does not exist!");
+        }
+    }
 }
 
 while (true)
@@ -115,17 +136,27 @@ while (true)
     Console.WriteLine("6. Modify Flight Details");
     Console.WriteLine("7. Display Flight Schedule");
     Console.WriteLine("0. Exit");
-    Console.Write("Please select your option:\n");
-    int option = Convert.ToInt32(Console.ReadLine());
-    if (!optionList.Contains(option))
+    try
     {
-        Console.WriteLine("Invalid option!");
-        continue;
-    }
-    if (option == 0)
+        Console.Write("Please select your option:\n");
+        int option = Convert.ToInt32(Console.ReadLine());
+        if (!optionList.Contains(option))
     {
-        Console.WriteLine("\nGoodbye!");
-        break;
+            Console.WriteLine("Invalid option!");
+            continue;
+        }
+        if (option == 0)
+        {
+            Console.WriteLine("\nGoodbye!");
+            break;
+        }
     }
-  
+    catch (FormatException ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
 }

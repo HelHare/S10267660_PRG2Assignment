@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 //==========================================================
 namespace S10267660_PRG2Assignment
 {
+
      abstract class Flight
+
     {
         public string FlightNumber { get; set; }
         public string Origin { get; set; }
@@ -18,7 +20,9 @@ namespace S10267660_PRG2Assignment
         public DateTime ExpectedTime { get; set; }
         public string Status { get; set; }
 
+
         public Flight(string FN, string O, string D, DateTime ET,string S)
+
         {
             FlightNumber = FN;
             Origin = O;
@@ -27,10 +31,20 @@ namespace S10267660_PRG2Assignment
             Status = S;
         }
 
+        public Flight()
+        {
+            FlightNumber = "";
+            Origin = "";
+            Destination = "";
+            ExpectedTime = new DateTime();
+            Status = "";
+        }
+
         public abstract double CalculateFees();
         public override string ToString()
         {
             return "Flight Number: " + FlightNumber + " Origin: " + Origin +" Destination: "+Destination+" Expected Time: "+ExpectedTime+" Status: "+ Status;
+
 
         }
     }

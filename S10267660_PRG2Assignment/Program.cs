@@ -6,6 +6,7 @@
 
 using S10267660_PRG2Assignment;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 
@@ -59,7 +60,7 @@ using (StreamReader streamReader = new StreamReader("flights.csv"))
     while ((line = streamReader.ReadLine()) != null)
     {
         string[] flightData = line.Split(",");
-        flights.Add(new NORMFlight(flightData[0], flightData[1], flightData[2], DateTime.ParseExact(flightData[3], formats, CultureInfo.InvariantCulture), flightData[4]));
+        flights.Add(new NORMFlight(flightData[0], flightData[1], flightData[2], DateTime.ParseExact(flightData[3], formats,CultureInfo.InvariantCulture), flightData[4]));
         flightCount += 1;
     }
     Console.WriteLine($"{flightCount} Flights Loaded!");

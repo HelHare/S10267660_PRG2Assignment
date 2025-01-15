@@ -49,6 +49,7 @@ using (StreamReader sr = new StreamReader("boardinggates.csv"))
 }
 
 //2)	Load files(flights)
+List<Flight> flightList = new List<Flight>();
 Console.WriteLine("Loading Flights...");
 using (StreamReader streamReader = new StreamReader("flights.csv"))
 {
@@ -56,11 +57,30 @@ using (StreamReader streamReader = new StreamReader("flights.csv"))
     string s = streamReader.ReadLine(); // read the first line
     int flightCount = 0;
     string[] formats = ["hh:mm tt", "h:mm tt"];
-    List<NORMFlight> flights = new List<NORMFlight>();
     while ((line = streamReader.ReadLine()) != null)
     {
         string[] flightData = line.Split(",");
-        flights.Add(new NORMFlight(flightData[0], flightData[1], flightData[2], DateTime.ParseExact(flightData[3], formats,CultureInfo.InvariantCulture), flightData[4]));
+        string flightType = flightData[4];
+        Console.WriteLine($"{flightType}");
+        switch (flightType)
+        {
+            case "CFFT":
+                Flight cfftFlight = new CFFTFlight(flightData[0], flightData[1], flightData[2], DateTime.ParseExact(flightData[3], formats, CultureInfo.InvariantCulture, DateTimeStyles.None), "On Time");
+                flightList.Add(cfftFlight);
+                break;
+            case "DDJB":
+                Flight ddjbFlight = new DDJBFlight(flightData[0], flightData[1], flightData[2], DateTime.ParseExact(flightData[3], formats, CultureInfo.InvariantCulture, DateTimeStyles.None), "On Time");
+                flightList.Add(ddjbFlight);
+                break;
+            case "LWTT":
+                Flight lwttFlight = new LWTTFlight(flightData[0], flightData[1], flightData[2], DateTime.ParseExact(flightData[3], formats, CultureInfo.InvariantCulture, DateTimeStyles.None), "On Time");
+                flightList.Add(lwttFlight);
+                break;
+            default:
+                Flight normFlight = new NORMFlight(flightData[0], flightData[1], flightData[2], DateTime.ParseExact(flightData[3], formats, CultureInfo.InvariantCulture, DateTimeStyles.None), "On Time");
+                flightList.Add(normFlight);
+                break;
+        }
         flightCount += 1;
     }
     Console.WriteLine($"{flightCount} Flights Loaded!");

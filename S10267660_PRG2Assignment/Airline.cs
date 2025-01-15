@@ -22,6 +22,12 @@ namespace S10267660_PRG2Assignment
             Name = name;
             Code = code;
         }
+        public Airline(string name, string code)
+        {
+            Name = name;
+            Code = code;
+            Flights = new Dictionary<string, Flight>();
+        }
         public Airline()
         {
             Name = "";

@@ -8,6 +8,7 @@ using S10267660_PRG2Assignment;
 using System.Collections.Generic;
 using System.Linq;
 
+
 //1)	Load files (airlines and boarding gates)
 
 List<int> optionList = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7 };
@@ -47,7 +48,22 @@ using (StreamReader sr = new StreamReader("boardinggates.csv"))
 }
 
 //2)	Load files(flights)
-
+Console.WriteLine("Loading Flights...");
+using (StreamReader streamReader = new StreamReader("flights.csv"))
+{
+    string line;
+    string s = streamReader.ReadLine(); // read the first line
+    int flightCount = 0;
+    string[] formats = ["hh:mm tt", "h:mm tt"];
+    List<NORMFlight> flights = new List<NORMFlight>();
+    while ((line = streamReader.ReadLine()) != null)
+    {
+        string[] flightData = line.Split(",");
+        flights.Add(new NORMFlight(flightData[0], flightData[1], flightData[2], DateTime.ParseExact(flightData[3], formats, CultureInfo.InvariantCulture), flightData[4]));
+        flightCount += 1;
+    }
+    Console.WriteLine($"{flightCount} Flights Loaded!");
+}
 //3)	List all flights with their basic information
 
 //4)	List all boarding gates

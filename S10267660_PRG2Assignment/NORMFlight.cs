@@ -13,17 +13,13 @@ namespace S10267660_PRG2Assignment
 {
      class NORMFlight : Flight
     {
-        public NORMFlight(string flightNumber, string origin, string destination, DateTime expectedTime, string status, string terminal) : base(flightNumber, origin, destination, expectedTime, status)
+        public NORMFlight(string flightNumber, string origin, string destination, DateTime expectedTime, string status) : base(flightNumber, origin, destination, expectedTime, status)
         {
 // left empty because all the code is in the base class
         }
         public NORMFlight()
-        { 
-            FlightNumber = "";
-            Origin = "";
-            Destination = "";
-            ExpectedTime = new DateTime();
-            Status = "";
+        {
+// left empty because all the code is in the base class
         }
         public override double CalculateFees()
         {

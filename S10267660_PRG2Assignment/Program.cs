@@ -6,12 +6,13 @@
 
 using S10267660_PRG2Assignment;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Linq;
+
 
 //1)	Load files (airlines and boarding gates)
 
 List<int> optionList = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7 };
-Dictionary<string, Airline> airlineDict = new Dictionary<string, Airline>();
+List<Airline> airLineList = new List<Airline>();
 Dictionary<string, BoardingGate> boardingGateDict = new Dictionary<string, BoardingGate>();
 
 Console.WriteLine("Loading Airlines...");
@@ -24,7 +25,7 @@ using (StreamReader sr = new StreamReader("airlines.csv"))
     {
         string[]airlines_info = s.Split(",");
         Airline airline = new Airline(airlines_info[0], airlines_info[1]);
-        airlineDict[airlines_info[1]] = airline;
+        airLineList.Add(airline);
         airlineCount += 1;
     }
     Console.WriteLine(airlineCount + " Airlines Loaded!");
@@ -88,20 +89,33 @@ void DisplayBoardingGates()
 void DisplayFlightInfoFromAirline()
 {
     
-    foreach(KeyValuePair<string,Airline>airLineInfo in airlineDict)
+    for(int i = 0; i < airLineList.Count; i++)
     {
-        Console.WriteLine("{0,-10} {1,-10}", airLineInfo.Value.Code, airLineInfo.Value.Name);
+        Console.WriteLine("{0,-10} {1,-10}", airLineList[i].Code, airLineList[i].Name);
     }
+    bool airLineFound = false;
     while (true)
     {
         Console.Write("Enter Airline Code: ");
         string airLineCode = Console.ReadLine();
-        if (airlineDict.ContainsKey(airLineCode))
+        for (int i = 0; i < airLineList.Count; i++)
         {
-            Console.WriteLine("=============================================");
-            Console.WriteLine("List of Flights for " + airlineDict[airLineCode].Name);
-            Console.WriteLine("=============================================");
+            if (airLineList[i].Code == airLineCode)
+            {
+                airLineFound = true;
+                Console.WriteLine("=============================================");
+                Console.WriteLine("List of Flights for " + airLineList[i].Name);
+                Console.WriteLine("=============================================");
 
+                break;
+            }
+            else
+            {
+                continue;
+            }
+        }
+        if (airLineFound == true)
+        {
             break;
         }
         else
@@ -118,18 +132,31 @@ void ModifyFlightInfo()
     Console.WriteLine("=============================================");
     Console.WriteLine("List of Airlines for Changi Airport Terminal 5");
     Console.WriteLine("=============================================");
-    foreach (KeyValuePair<string, Airline> airLineInfo in airlineDict)
+    for (int i = 0; i < airLineList.Count; i++)
     {
-        Console.WriteLine("{0,-10} {1,-10}", airLineInfo.Value.Code, airLineInfo.Value.Name);
+        Console.WriteLine("{0,-10} {1,-10}", airLineList[i].Code, airLineList[i].Name);
     }
+    bool airLineFound = false;
     while (true)
     {
-        Console.Write("Enter Airline Code: \n");
+        Console.Write("Enter Airline Code: ");
         string airLineCode = Console.ReadLine();
-        if (airlineDict.ContainsKey(airLineCode))
+        for (int i = 0; i < airLineList.Count; i++)
         {
-            Console.WriteLine("List of Flights for " + airlineDict[airLineCode].Name);
-            
+            if (airLineList[i].Code == airLineCode)
+            {
+                airLineFound = true;
+                Console.WriteLine("List of Flights for " + airLineList[i].Name);
+
+                break;
+            }
+            else
+            {
+                continue;
+            }
+        }
+        if (airLineFound == true)
+        {
             break;
         }
         else
@@ -141,7 +168,7 @@ void ModifyFlightInfo()
 
 while (true)
 {
-    Console.WriteLine("\n \n \n \n \n =============================================");
+    Console.WriteLine("\n \n \n \n \n=============================================");
     Console.WriteLine("Welcome to Changi Airport Terminal 5");
     Console.WriteLine("=============================================");
     Console.WriteLine("1. List All Flights");
@@ -165,6 +192,18 @@ while (true)
         {
             Console.WriteLine("\nGoodbye!");
             break;
+        }
+        else if (option == 2)
+        {
+            DisplayBoardingGates();
+        }
+        else if (option == 5)
+        {
+            DisplayFlightInfoFromAirline();
+        }
+        else if (option == 6)
+        {
+            ModifyFlightInfo();
         }
     }
     catch (FormatException ex)

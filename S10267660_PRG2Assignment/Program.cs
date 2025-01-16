@@ -61,7 +61,6 @@ using (StreamReader streamReader = new StreamReader("flights.csv"))
     {
         string[] flightData = line.Split(",");
         string flightType = flightData[4];
-        Console.WriteLine($"{flightType}");
         switch (flightType)
         {
             case "CFFT":
@@ -85,11 +84,24 @@ using (StreamReader streamReader = new StreamReader("flights.csv"))
     }
     Console.WriteLine($"{flightCount} Flights Loaded!");
 }
+DisplayFlights();
 //3)	List all flights with their basic information
+void DisplayFlights()
+{
+    Console.WriteLine("=============================================");
+    Console.WriteLine("List of Flights for Changi Airport Terminal 5");
+    Console.WriteLine("=============================================");
+    Console.WriteLine("{0,-16}{1,-23}{2,-23}{3,-23}{4,-10}", "Flight Number", "Origin", "Destination", "Expected Time", "Status");
+    foreach (Flight flight in flightList)
+    {
+        Console.WriteLine("{0,-16}{1,-23}{2,-23}{3,-23}{4,-10}", flight.FlightNumber, flight.Origin, flight.Destination, flight.ExpectedTime, flight.Status);
+    }
+}
 
-//4)	List all boarding gates
 
-void DisplayBoardingGates()
+    //4)	List all boarding gates
+
+    void DisplayBoardingGates()
 {
     Console.WriteLine("=============================================");
     Console.WriteLine("List of Boarding Gates for Changi Airport Terminal 5");

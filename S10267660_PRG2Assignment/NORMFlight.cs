@@ -13,13 +13,16 @@ namespace S10267660_PRG2Assignment
 {
      class NORMFlight : Flight
     {
+        public double RequestFee { get; set; }
         public NORMFlight(string flightNumber, string origin, string destination, DateTime expectedTime, string status) : base(flightNumber, origin, destination, expectedTime, status)
         {
-// left empty because all the code is in the base class
+            RequestFee = 500;
+            // placeholder value until CalculateFees is implemented
         }
         public NORMFlight()
         {
-// left empty because all the code is in the base class
+            RequestFee = 500;
+            // placeholder value until CalculateFees is implemented
         }
         public override double CalculateFees()
         {
@@ -27,7 +30,7 @@ namespace S10267660_PRG2Assignment
         }
         public override string ToString()
         {
-            return $"Flight Number: {FlightNumber}, Origin: {Origin}, Destination: {Destination}, Expected Time: {ExpectedTime}, Status: {Status}";
+            return $"Flight Number: {FlightNumber}, Origin: {Origin}, Destination: {Destination}, Expected Time: {ExpectedTime}, Status: {Status}, Request Fee: {RequestFee}";
         }
     }
 }

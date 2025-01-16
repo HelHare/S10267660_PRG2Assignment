@@ -27,8 +27,7 @@ namespace S10267660_PRG2Assignment
         }
         public override string ToString()
         {
-            return $"{base.ToString} Request Fee:{RequestFee}"
-            ;
+            return $"{base.ToString()} Request Fee:{RequestFee}";
         }
     }
 }   

@@ -28,6 +28,20 @@ namespace S10267660_PRG2Assignment
             Name = "";
             Code = "";
         }
+
+        public bool AddFlight(Flight flight)
+        {
+            try
+            {
+                Flights[flight.FlightNumber] = flight;
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not add boarding gate!");
+                return false;
+            }
+        }
         public override string ToString()
         {
             string str = "Airline: " + Name + " (" + Code + ")\n";

@@ -53,7 +53,7 @@ namespace S10267660_PRG2Assignment
             }
         }
 
-        public Airline GetAirlineFromFlight(Flight flight)
+        public Airline? GetAirlineFromFlight(Flight flight)
         {
             foreach (Airline airlineInfo in Airlines.Values)
             {

@@ -91,10 +91,19 @@ void DisplayFlights()
     Console.WriteLine("=============================================");
     Console.WriteLine("List of Flights for Changi Airport Terminal 5");
     Console.WriteLine("=============================================");
-    Console.WriteLine("{0,-16}{1,-23}{2,-23}{3,-23}{4,-10}", "Flight Number", "Origin", "Destination", "Expected Time", "Status");
+    Console.WriteLine("{0,-16}{1,-23}{2,-23}{3,-23}{4,-10}", "Flight Number", "Airline Name", "Origin", "Destination", "Expected Departure/Arrival Time");
     foreach (Flight flight in flightList)
     {
-        Console.WriteLine("{0,-16}{1,-23}{2,-23}{3,-23}{4,-10}", flight.FlightNumber, flight.Origin, flight.Destination, flight.ExpectedTime, flight.Status);
+        string airlineCode = flight.FlightNumber.Substring(0, 2);
+        foreach (Airline airline in airLineList)
+        {
+            if (airline.Code == airlineCode)
+            {
+                airlineCode = airline.Name;
+                break;
+            }
+        }
+        Console.WriteLine("{0,-16}{1,-23}{2,-23}{3,-23}{4,-10}", flight.FlightNumber, airlineCode, flight.Origin, flight.Destination, flight.ExpectedTime);
     }
 }
 

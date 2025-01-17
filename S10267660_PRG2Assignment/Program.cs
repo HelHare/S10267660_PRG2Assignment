@@ -117,7 +117,131 @@ void DisplayBoardingGates()
 }
 
 //5)	Assign a boarding gate to a flight
-
+void AssignBoardingGateToFlight()
+{
+    Console.WriteLine("=============================================");
+    Console.WriteLine("Assign a Boarding Gate to a Flight");
+    Console.WriteLine("=============================================");
+    Console.WriteLine("Enter Flight Number: ");
+    string flightNumber = Console.ReadLine();
+    Flight selectedFlight = null;
+    foreach (Flight flight in terminal.Flights.Values)
+    {
+        if (flight.FlightNumber == flightNumber)
+        {
+            selectedFlight = flight;
+            break;
+        }
+    }
+    if (selectedFlight != null)
+    {
+        Console.WriteLine($"Flight Number: {selectedFlight.FlightNumber}");
+        Console.WriteLine($"Origin: {selectedFlight.Origin}");
+        Console.WriteLine($"Destination: {selectedFlight.Destination}");
+        Console.WriteLine($"Expected Time: {selectedFlight.ExpectedTime}");
+        foreach (KeyValuePair<string, BoardingGate> kvp in terminal.BoardingGates)
+        {
+            if (selectedFlight == kvp.Value.Flight) // check if flight is already assigned to a boarding gate
+            {
+                Console.WriteLine("Flight is already assigned to a boarding gate!");
+                return;
+            }
+        }
+    }
+    if (selectedFlight is NORMFlight)
+    {
+        Console.WriteLine("Special Request Code: None");
+    }
+    else if (selectedFlight is CFFTFlight)
+    {
+        Console.WriteLine("Special Request Code: CFFT");
+    }
+    else if (selectedFlight is DDJBFlight)
+    {
+        Console.WriteLine("Special Request Code: DDJB");
+    }
+    else if (selectedFlight is LWTTFlight)
+    {
+        Console.WriteLine("Special Request Code: LWTT");
+    }
+    else
+    {
+        Console.WriteLine("No such flight exists!");
+        return;
+    }
+    while (true)
+    {
+        BoardingGate selectedBoardingGate = null;
+        Console.WriteLine("Enter Boarding Gate Name: ");
+        string boardingGateName = Console.ReadLine();
+        foreach (BoardingGate boardingGate in terminal.BoardingGates.Values)
+        {
+            if (boardingGate.GateName == boardingGateName)
+            {
+                selectedBoardingGate = boardingGate;
+                break;
+            }
+        }
+        if (selectedBoardingGate != null)
+        {
+            Console.WriteLine($"Boarding Gate Name: {selectedBoardingGate.GateName}");
+            Console.WriteLine($"Supports DDJB: {selectedBoardingGate.SupportsDDJB}");
+            Console.WriteLine($"Supports CFFT: {selectedBoardingGate.SupportsCFFT}");
+            Console.WriteLine($"Supports LWTT: {selectedBoardingGate.SupportsLWTT}");
+            NORMFlight comparisonFlight = new NORMFlight();
+            if (selectedBoardingGate.Flight.FlightNumber == comparisonFlight.FlightNumber) // checks if the boarding gate flight number matches the one from the default constructor.
+            {
+                selectedBoardingGate.Flight = selectedFlight;
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Boarding Gate already in use by another flight!");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Boarding Gate does not exist!");
+        }
+    }
+    Console.WriteLine("Would you like to update the status of this flight? (Y/N)");
+    string userInput = Console.ReadLine();
+    if (userInput.ToUpper() == "Y")
+    {
+        Console.WriteLine("1. Delayed");
+        Console.WriteLine("2. Boarding");
+        Console.WriteLine("3. On Time");
+        Console.WriteLine("Please select the new status of the flight:");
+        bool continueRun = true;
+        while (continueRun)
+        {
+            int newStatus = Convert.ToInt32(Console.ReadLine());
+            switch (newStatus)
+            {
+                case 1:
+                    selectedFlight.Status = "Delayed";
+                    continueRun = false;
+                    break;
+                case 2:
+                    selectedFlight.Status = "Boarding";
+                    continueRun = false;
+                    break;
+                case 3:
+                    selectedFlight.Status = "On Time";
+                    continueRun = false;
+                    break;
+                default:
+                    Console.WriteLine("Invalid option!");
+                    break;
+            }
+        }
+    }
+    else
+    {
+        selectedFlight.Status = "On Time";
+    }
+    Console.WriteLine("Flight has been successfully assigned to a boarding gate!");
+}
 //6)	Create a new flight
 
 //7)	Display full flight details from an airline
@@ -671,7 +795,7 @@ while (true)
         }
         else if (option == 3)
         {
-
+            AssignBoardingGateToFlight();
         }
         else if (option == 4)
         {
@@ -712,5 +836,3 @@ while (true)
         Console.WriteLine(ex.Message);
     }
 }
-
-

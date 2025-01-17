@@ -173,7 +173,7 @@ void AssignBoardingGateToFlight()
     }
     else
     {
-        Console.WriteLine("No such flight exists you are delusional"); // change later
+        Console.WriteLine("No such flight exists!");
         return;
     }
     while (true)

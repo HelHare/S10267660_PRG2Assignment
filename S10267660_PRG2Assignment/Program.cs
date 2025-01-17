@@ -752,8 +752,8 @@ void AssignFlightsToBoardingGates()
     }
     try
     {
-    Console.WriteLine(processedFlightsBoardingGates + " Flights and Boarding Gates were processed and assigned!");
-    Console.WriteLine("A total of {0}% of Flights and Boarding Gates were processed and assigned automatically!", ((terminal.BoardingGates.Count - processedFlightsBoardingGates) / processedFlightsBoardingGates * 1.00) * 100);
+    Console.WriteLine(processedFlightsBoardingGates + " Flight(s) and Boarding Gate(s) was/were processed and assigned!");
+    Console.WriteLine("A total of {0}% of Flights and Boarding Gates were processed and assigned automatically!", ((processedFlightsBoardingGates / (terminal.Flights.Count * 1.00)) * 100).ToString("0.00"));
     }
     catch (DivideByZeroException ex)
     {
@@ -761,7 +761,7 @@ void AssignFlightsToBoardingGates()
     }
 }
 
-List<int> mainMenuOptionList = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+List<int> mainMenuOptionList = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8 ,9};
 while (true)
 {
     Console.WriteLine("\n \n \n \n \n=============================================");
@@ -775,6 +775,7 @@ while (true)
     Console.WriteLine("6. Modify Flight Details");
     Console.WriteLine("7. Display Flight Schedule");
     Console.WriteLine("8. Assign all Flights to Boarding Gates");
+    Console.WriteLine("9. Print Airline Fees");
     Console.WriteLine("0. Exit");
     try
     {
@@ -819,7 +820,7 @@ while (true)
         }
         else if (option == 9)
         { 
-
+            terminal.PrintAirlineFees();
         }
         else
         {

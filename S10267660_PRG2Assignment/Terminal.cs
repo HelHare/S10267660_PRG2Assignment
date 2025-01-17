@@ -53,13 +53,14 @@ namespace S10267660_PRG2Assignment
             }
         }
 
-        public Airline? GetAirlineFromFlight(Flight flight)
+        public Airline GetAirlineFromFlight(Flight flight)
         {
-            foreach (Airline airlineInfo in Airlines.Values)
+            string[]flightCodeNumber = flight.FlightNumber.Split(' ');
+            foreach(Airline airline in Airlines.Values)
             {
-                if (airlineInfo.Flights.ContainsKey(flight.FlightNumber))
+                if (airline.Code == flightCodeNumber[0])
                 {
-                    return airlineInfo;
+                    return airline;
                 }
                 else
                 {

@@ -40,7 +40,10 @@ namespace S10267660_PRG2Assignment
             Status = "";
         }
 
-        public abstract double CalculateFees();
+        public virtual double CalculateFees()
+        {
+            throw new NotImplementedException();
+        }
         public override string ToString()
         {
             return "Flight Number: " + FlightNumber + " Origin: " + Origin +" Destination: "+Destination+" Expected Time: "+ExpectedTime+" Status: "+ Status;

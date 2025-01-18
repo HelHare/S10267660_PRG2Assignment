@@ -400,17 +400,11 @@ void ModifyFlightInfo()
                 {
                     try
                     {
-                        List<int> flightOptionList = new List<int> { 1, 2 };
                         Console.WriteLine("1. Modify Flight");
                         Console.WriteLine("2. Delete Flight");
                         Console.Write("Choose an option:\n");
                         int flightOption = Convert.ToInt32(Console.ReadLine());
-                        if (!flightOptionList.Contains(flightOption))
-                        {
-                            Console.WriteLine("Invalid option!");
-                            continue;
-                        }
-                        else if (flightOption == 1)
+                        if (flightOption == 1)
                         {
                             Console.Write("\nChoose an existing Flight to modify:\n");
                             string flightNumber = Console.ReadLine();
@@ -422,20 +416,14 @@ void ModifyFlightInfo()
                             else 
                             {
                                 flightFound = true;
-                                List<int> modifyFlightOptionList = new List<int> { 1, 2, 3, 4 };
                                 Console.WriteLine("1. Modify Basic Information");
                                 Console.WriteLine("2. Modify Status");
                                 Console.WriteLine("3. Modify Special Request Code");
                                 Console.WriteLine("4. Modify Boarding Gate");
                                 Console.Write("Choose an option:\n");
                                 int modifyFlightOption = Convert.ToInt32(Console.ReadLine());
-                                if (!modifyFlightOptionList.Contains(modifyFlightOption))
-                                {
-                                    Console.WriteLine("Invalid option!");
-                                    continue;
-                                }
                                 //modify origin, destination, expected time
-                                else if (modifyFlightOption == 1)
+                                if (modifyFlightOption == 1)
                                 {
                                     Console.Write("Enter new Origin: ");
                                     string origin = Console.ReadLine();
@@ -522,41 +510,9 @@ void ModifyFlightInfo()
                                         }
                                         break;
                                     }
-                                    bool boardingGateAssigned = false;
-                                    Console.WriteLine("Flight updated!");
-                                    foreach (Flight newFlight in terminal.Flights.Values)
-                                    {
-                                        if (newFlight.FlightNumber == flightNumber)
-                                        {
-                                            Console.WriteLine("Flight Number: " + newFlight.FlightNumber);
-
-                                            Console.WriteLine("Airline Name: " + terminal.GetAirlineFromFlight(newFlight).Name);
-                                            Console.WriteLine("Origin: " + newFlight.Origin);
-                                            Console.WriteLine("Destination: " + newFlight.Destination);
-                                            Console.WriteLine("Expected Time: " + newFlight.ExpectedTime);
-                                            Console.WriteLine("Status: " + newFlight.Status);
-                                            foreach (BoardingGate assignedFlight in terminal.BoardingGates.Values)
-                                            {
-                                                if (assignedFlight.Flight.FlightNumber == flightNumber)
-                                                {
-                                                    Console.WriteLine("Boarding Gate: " + assignedFlight.GateName);
-                                                    boardingGateAssigned = true;
-                                                    break;
-                                                }
-                                                else
-                                                {
-                                                    continue;
-                                                }
-                                            }
-                                            if (boardingGateAssigned == false)
-                                            {
-                                                Console.WriteLine("Boarding Gate: Unassigned");
-                                            }
-                                        }
-                                    }
                                 }
                                 // modify Boarding Gate
-                                else
+                                else if (modifyFlightOption == 4)
                                 {
                                     while (true)
                                     {
@@ -581,10 +537,47 @@ void ModifyFlightInfo()
                                         }
                                     }
                                 }
+                                else
+                                {
+                                    Console.WriteLine("Invalid option!");
+                                    continue;
+                                }
+                                bool boardingGateAssigned = false;
+                                Console.WriteLine("Flight updated!");
+                                foreach (Flight newFlight in terminal.Flights.Values)
+                                {
+                                    if (newFlight.FlightNumber == flightNumber)
+                                    {
+                                        Console.WriteLine("Flight Number: " + newFlight.FlightNumber);
+
+                                        Console.WriteLine("Airline Name: " + terminal.GetAirlineFromFlight(newFlight).Name);
+                                        Console.WriteLine("Origin: " + newFlight.Origin);
+                                        Console.WriteLine("Destination: " + newFlight.Destination);
+                                        Console.WriteLine("Expected Time: " + newFlight.ExpectedTime);
+                                        Console.WriteLine("Status: " + newFlight.Status);
+                                        foreach (BoardingGate assignedFlight in terminal.BoardingGates.Values)
+                                        {
+                                            if (assignedFlight.Flight.FlightNumber == flightNumber)
+                                            {
+                                                Console.WriteLine("Boarding Gate: " + assignedFlight.GateName);
+                                                boardingGateAssigned = true;
+                                                break;
+                                            }
+                                            else
+                                            {
+                                                continue;
+                                            }
+                                        }
+                                        if (boardingGateAssigned == false)
+                                        {
+                                            Console.WriteLine("Boarding Gate: Unassigned");
+                                        }
+                                    }
+                                }
                             }
                         }
                         // Delete flight
-                        else
+                        else if (flightOption == 2)
                         {
                             Console.Write("Select an existing flight to delete: ");
                             string flightToDelete = Console.ReadLine();
@@ -613,6 +606,11 @@ void ModifyFlightInfo()
                                     continue;
                                 }
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid option!");
+                            continue;
                         }
                         break;
                     }
@@ -761,7 +759,6 @@ void AssignFlightsToBoardingGates()
     }
 }
 
-List<int> mainMenuOptionList = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8 ,9};
 while (true)
 {
     Console.WriteLine("\n \n \n \n \n=============================================");
@@ -781,12 +778,7 @@ while (true)
     {
         Console.Write("Please select your option:\n");
         int option = Convert.ToInt32(Console.ReadLine());
-        if (!mainMenuOptionList.Contains(option))
-        {
-            Console.WriteLine("Invalid option!");
-            continue;
-        }
-        else if (option == 1)
+        if (option == 1)
         {
             DisplayFlights();
         }
@@ -822,10 +814,14 @@ while (true)
         { 
             terminal.PrintAirlineFees();
         }
-        else
+        else if (option == 0)
         {
             Console.WriteLine("\nGoodbye!");
             break;
+        }
+        else
+        {
+            Console.WriteLine("Invalid option!");
         }
     }
     catch (FormatException ex)

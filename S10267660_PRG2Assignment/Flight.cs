@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace S10267660_PRG2Assignment
 {
 
-     abstract class Flight
+     abstract class Flight : IComparable<Flight>
 
     {
         public string FlightNumber { get; set; }
@@ -39,10 +39,23 @@ namespace S10267660_PRG2Assignment
             ExpectedTime = new DateTime();
             Status = "";
         }
-
+    public int CompareTo(Flight other)
+    {
+            return ExpectedTime.CompareTo(other.ExpectedTime);
+    }
         public virtual double CalculateFees()
         {
-            throw new NotImplementedException();
+            string truncatedDestination = Destination.Substring(0, 9);
+            string truncatedOrigin = Origin.Substring(0, 9);
+
+            if (truncatedDestination == "Singapore") // flights that end in Singapore
+            {
+                return 500;
+            }
+            else // flights that start in Singapore
+            {
+                return 800;
+            }
         }
         public override string ToString()
         {

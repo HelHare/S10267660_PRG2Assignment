@@ -6,9 +6,11 @@
 
 using S10267660_PRG2Assignment;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.Design;
 using System.Globalization;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 
 
@@ -243,6 +245,88 @@ void AssignBoardingGateToFlight()
     Console.WriteLine("Flight has been successfully assigned to a boarding gate!");
 }
 //6)	Create a new flight
+// do input validation for airline part of the flight number
+void CreateNewFlight()
+{
+    bool continueRunning = true;
+    while (continueRunning)
+    {
+    try
+    {
+        Console.WriteLine("Enter Flight Number: ");
+        string flightNumber = Console.ReadLine();
+        string[] flightNumberParts = flightNumber.Split(' ');
+        if (flightNumberParts.Length != 2)
+        {
+            throw new FormatException("Invalid Flight Number Format!");
+        }
+        else if (!terminal.Airlines.ContainsValue(terminal.Airlines[flightNumberParts[0]]))
+        {
+            throw new FormatException("Invalid Airline Code!");
+        }
+        Console.WriteLine("Enter Origin: ");
+        string origin = Console.ReadLine();
+        Console.WriteLine("Enter Destination: ");
+        string destination = Console.ReadLine();
+        Console.WriteLine("Enter Expected Departure/Arrival Time (dd/mm/yyyy hh:mm): ");
+        DateTime date = DateTime.Parse(Console.ReadLine());
+        Console.WriteLine("Enter Special Request Code (CFFT/DDJB/LWTT/None): ");
+        string specialRequestCode = Console.ReadLine();
+        if (!(specialRequestCode == "CFFT" || specialRequestCode == "DDJB" || specialRequestCode == "LWTT" || specialRequestCode == "None"))
+        {
+            throw new FormatException("Invalid Special Request Code!");
+        }
+        switch (specialRequestCode)
+        {
+            case "CFFT":
+                CFFTFlight cfftFlight = new CFFTFlight(flightNumber, origin, destination, date, "On Time");
+                terminal.Flights[flightNumber] = cfftFlight;
+                    File.AppendAllText("flights.csv", $"" +
+                        $"{flightNumber},{origin},{destination},{date.TimeOfDay},{specialRequestCode}\n");
+                    break;
+            case "DDJB":
+                DDJBFlight ddjbFlight = new DDJBFlight(flightNumber, origin, destination, date, "On Time");
+                terminal.Flights[flightNumber] = ddjbFlight;
+                    File.AppendAllText("flights.csv", $"{flightNumber},{origin},{destination},{date.TimeOfDay},{specialRequestCode}\n");
+                    break;
+            case "LWTT":
+                LWTTFlight lwttFlight = new LWTTFlight(flightNumber, origin, destination, date, "On Time");
+                terminal.Flights[flightNumber] = lwttFlight;
+                    File.AppendAllText("flights.csv", $"{flightNumber},{origin},{destination},{date.TimeOfDay},{specialRequestCode}\n");
+                    break;
+            case "None":
+                NORMFlight normFlight = new NORMFlight(flightNumber, origin, destination, date, "On Time");
+                terminal.Flights[flightNumber] = normFlight;
+                    File.AppendAllText("flights.csv", $"{flightNumber},{origin},{destination},{date.TimeOfDay},\n");
+                    break;
+        }
+            Console.WriteLine($"Flight {flightNumber} has been added!");
+            while (true)
+            {
+                Console.WriteLine("Would you like to add another flight? (Y/N)");
+                string userInput = Console.ReadLine().ToUpper();
+                if (userInput == "Y")
+                {
+                    break;
+                }
+                else if (userInput == "N")
+                {
+                    continueRunning = false;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Input!");
+                }
+            }
+    }
+    catch (FormatException ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+}
+}
+
 
 //7)	Display full flight details from an airline
 
@@ -644,6 +728,36 @@ void ModifyFlightInfo()
     }
 }
 
+//9) Display flights in chronological order
+
+void DisplayFlightSchedule()
+{
+    Console.WriteLine("{0,-16}{1,-23}{2,-23}{3,-23}{4,-23}{5, -10}", "Flight Number", "Airline", "Origin", "Destination", "Expected Time", "Boarding Gate");
+List<Flight> sortedFlightList = new List<Flight>();
+    sortedFlightList = terminal.Flights.Values.ToList<Flight>();
+    sortedFlightList.Sort();
+
+    foreach (Flight flight in sortedFlightList)
+    {
+        BoardingGate? assignedBoardingGate = null;
+        foreach (BoardingGate boardingGate in terminal.BoardingGates.Values)
+        {
+            if (boardingGate.Flight == flight) //check if any boarding gate has been assigned to the current flight
+            {
+                assignedBoardingGate = boardingGate;
+            }    
+        }
+        if (assignedBoardingGate == null)
+        {
+            Console.WriteLine("{0,-16}{1,-23}{2,-23}{3,-23}{4,-23}", flight.FlightNumber, terminal.GetAirlineFromFlight(flight).Name, flight.Origin, flight.Destination, flight.ExpectedTime);
+        }
+        else
+        {
+            Console.WriteLine("{0,-16}{1,-23}{2,-23}{3,-23}{4,-23}{5, -10}", flight.FlightNumber, terminal.GetAirlineFromFlight(flight).Name, flight.Origin, flight.Destination, flight.ExpectedTime, assignedBoardingGate.GateName);
+        }
+    }
+}
+
 //(a)	Process all unassigned flights to boarding gates in bulk
 void AssignFlightsToBoardingGates()
 {
@@ -759,6 +873,7 @@ void AssignFlightsToBoardingGates()
     }
 }
 
+
 while (true)
 {
     Console.WriteLine("\n \n \n \n \n=============================================");
@@ -792,7 +907,7 @@ while (true)
         }
         else if (option == 4)
         {
-
+            CreateNewFlight();
         }
         else if (option == 5)
         {
@@ -804,7 +919,7 @@ while (true)
         }
         else if (option == 7)
         {
-
+            DisplayFlightSchedule();
         }
         else if (option == 8)
         {

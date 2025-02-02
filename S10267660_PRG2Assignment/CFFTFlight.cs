@@ -15,7 +15,7 @@ namespace S10267660_PRG2Assignment
         public double RequestFee = 150;
         public CFFTFlight(string flightNumber, string origin, string destination, DateTime expectedTime, string status) : base(flightNumber, origin, destination, expectedTime, status)
         {
-   
+
         }
         public CFFTFlight()
         {
@@ -23,7 +23,7 @@ namespace S10267660_PRG2Assignment
         }
         public override double CalculateFees()
         {
-            throw new NotImplementedException();
+            return base.CalculateFees() + 150;
         }
         public override string ToString()
         {

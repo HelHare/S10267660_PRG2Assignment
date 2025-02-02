@@ -20,7 +20,7 @@ namespace S10267660_PRG2Assignment
 
         public override double CalculateFees()
         {
-            throw new NotImplementedException();
+            return base.CalculateFees() + 500;
         }
         public override string ToString()
         {

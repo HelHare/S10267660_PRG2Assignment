@@ -245,7 +245,6 @@ void AssignBoardingGateToFlight()
     Console.WriteLine("Flight has been successfully assigned to a boarding gate!");
 }
 //6)	Create a new flight
-// do input validation for airline part of the flight number
 void CreateNewFlight()
 {
     bool continueRunning = true;
@@ -269,7 +268,7 @@ void CreateNewFlight()
         Console.WriteLine("Enter Destination: ");
         string destination = Console.ReadLine();
         Console.WriteLine("Enter Expected Departure/Arrival Time (dd/mm/yyyy hh:mm): ");
-        DateTime date = DateTime.Parse(Console.ReadLine());
+        DateTime date = DateTime.ParseExact(Console.ReadLine(), "dd/M/yyyy H:mm", CultureInfo.InvariantCulture);
         Console.WriteLine("Enter Special Request Code (CFFT/DDJB/LWTT/None): ");
         string specialRequestCode = Console.ReadLine();
         if (!(specialRequestCode == "CFFT" || specialRequestCode == "DDJB" || specialRequestCode == "LWTT" || specialRequestCode == "None"))
@@ -282,22 +281,22 @@ void CreateNewFlight()
                 CFFTFlight cfftFlight = new CFFTFlight(flightNumber, origin, destination, date, "On Time");
                 terminal.Flights[flightNumber] = cfftFlight;
                     File.AppendAllText("flights.csv", $"" +
-                        $"{flightNumber},{origin},{destination},{date.TimeOfDay},{specialRequestCode}\n");
+                        $"{flightNumber},{origin},{destination},{date.ToString("h:mm tt", CultureInfo.InvariantCulture)},{specialRequestCode}\n");
                     break;
             case "DDJB":
                 DDJBFlight ddjbFlight = new DDJBFlight(flightNumber, origin, destination, date, "On Time");
                 terminal.Flights[flightNumber] = ddjbFlight;
-                    File.AppendAllText("flights.csv", $"{flightNumber},{origin},{destination},{date.TimeOfDay},{specialRequestCode}\n");
+                    File.AppendAllText("flights.csv", $"{flightNumber},{origin},{destination},{date.ToString("h:mm tt", CultureInfo.InvariantCulture)},{specialRequestCode}\n");
                     break;
             case "LWTT":
                 LWTTFlight lwttFlight = new LWTTFlight(flightNumber, origin, destination, date, "On Time");
                 terminal.Flights[flightNumber] = lwttFlight;
-                    File.AppendAllText("flights.csv", $"{flightNumber},{origin},{destination},{date.TimeOfDay},{specialRequestCode}\n");
+                    File.AppendAllText("flights.csv", $"{flightNumber},{origin},{destination},{date.ToString("h:mm tt", CultureInfo.InvariantCulture)},{specialRequestCode}\n");
                     break;
             case "None":
                 NORMFlight normFlight = new NORMFlight(flightNumber, origin, destination, date, "On Time");
                 terminal.Flights[flightNumber] = normFlight;
-                    File.AppendAllText("flights.csv", $"{flightNumber},{origin},{destination},{date.TimeOfDay},\n");
+                    File.AppendAllText("flights.csv", $"{flightNumber},{origin},{destination},{date.ToString("h:mm tt", CultureInfo.InvariantCulture)},\n");
                     break;
         }
             Console.WriteLine($"Flight {flightNumber} has been added!");
@@ -514,7 +513,7 @@ void ModifyFlightInfo()
                                     Console.Write("Enter new Destination: ");
                                     string destination = Console.ReadLine();
                                     Console.Write("Enter new Expected Departure/Arrival Time (dd/mm/yyyy hh:mm): ");
-                                    DateTime expectedTime = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture);
+                                    DateTime expectedTime = DateTime.ParseExact(Console.ReadLine(), "dd/M/yyyy H:mm", CultureInfo.InvariantCulture);
                                     foreach (KeyValuePair<string, Flight> flight in terminal.Flights)
                                     {
                                         if (flight.Value.FlightNumber == flightNumber)
@@ -749,7 +748,7 @@ List<Flight> sortedFlightList = new List<Flight>();
         }
         if (assignedBoardingGate == null)
         {
-            Console.WriteLine("{0,-16}{1,-23}{2,-23}{3,-23}{4,-23}", flight.FlightNumber, terminal.GetAirlineFromFlight(flight).Name, flight.Origin, flight.Destination, flight.ExpectedTime);
+            Console.WriteLine("{0,-16}{1,-23}{2,-23}{3,-23}{4,-23}{5, -10}", flight.FlightNumber, terminal.GetAirlineFromFlight(flight).Name, flight.Origin, flight.Destination, flight.ExpectedTime,"Unassigned");
         }
         else
         {
